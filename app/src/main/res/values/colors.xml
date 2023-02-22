@@ -19,7 +19,7 @@
     <color name="NotesColor7">#E91E63</color>
     <color name="NotesColor8">#FF5722</color>
 
-    <color name="side">#fc466b</color>
+    <color name="side">#56575A</color>
     <color name="center">#3f5efb</color>
-    <color name="outside">#fd5c63</color>
+    <color name="outside">#56575A</color>
 </resources>
