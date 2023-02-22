@@ -25,7 +25,7 @@ Android Application to keep your notes at one single place
 - Clone your forked repository to your pc using `git clone https://github.com/SHabaj-dev/Notes.git`.
 - Open Clone Repository using Android Studio
 - If you are Using Android device Enable USB debugging and connect yout device with PC.
-- - Run and enjoy Or Can Directly Donload APK from [here](https://github.com/SHabaj-dev/Notes/blob/main/Notes.apk)
+- Run and enjoy Or Can Directly Donload APK from [here](https://github.com/SHabaj-dev/Notes/blob/main/Notes.apk)
 - Star this `repository`
 
 ## Screenshorts
