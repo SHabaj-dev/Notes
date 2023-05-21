@@ -3,6 +3,8 @@ package com.sbz.notes
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
@@ -22,21 +24,17 @@ class MainActivity : AppCompatActivity(), NotesAdapter.NotesItemClickedListener,
     PopupMenu.OnMenuItemClickListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var database: NoteDatabase
-    lateinit var viewModel: NoteViewModel
-    lateinit var adapter: NotesAdapter
-    lateinit var selectedNote: Note
-    private val updateNote =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-
-            if(result.resultCode == Activity.RESULT_OK){
-
-                val note = result.data?.getSerializableExtra("note") as? Note
-                if(note != null){
-                    viewModel.updateNote(note)
-                }
+    private lateinit var viewModel: NoteViewModel
+    private lateinit var adapter: NotesAdapter
+    private lateinit var selectedNote: Note
+    private val updateNote = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val note = result.data?.getSerializableExtra("note") as? Note
+            if (note != null) {
+                viewModel.updateNote(note)
             }
-
         }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,11 +44,9 @@ class MainActivity : AppCompatActivity(), NotesAdapter.NotesItemClickedListener,
         viewModel = ViewModelProvider(
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )
-            .get(NoteViewModel::class.java)
+        ).get(NoteViewModel::class.java)
 
         initUI()
-
 
         viewModel.allNotes.observe(this) { list ->
             list?.let {
@@ -67,39 +63,39 @@ class MainActivity : AppCompatActivity(), NotesAdapter.NotesItemClickedListener,
         adapter = NotesAdapter(this, this)
         binding.rvAllNotes.adapter = adapter
 
-        val getContent =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    val note = result.data?.getSerializableExtra("note") as? Note
-                    if (note != null) {
-                        viewModel.insertNote(note)
-                    }
+        val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val note = result.data?.getSerializableExtra("note") as? Note
+                if (note != null) {
+                    viewModel.insertNote(note)
                 }
             }
+        }
 
         binding.fbAddNewNote.setOnClickListener {
             val intent = Intent(this, AddNotes::class.java)
             getContent.launch(intent)
         }
 
-        /*binding.svSearchNotes.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-
-                if (newText != null) {
-                    adapter.filterList(newText)
-                }
-                return true
-            }
-
-        })*/
-
         val listOfNotes = arrayListOf<String>()
         val arrayAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listOfNotes)
         binding.svSearchNotes.setAdapter(arrayAdapter)
+
+        binding.svSearchNotes.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // No implementation needed
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                s?.let { searchText ->
+                    adapter.filterList(searchText.toString())
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // No implementation needed
+            }
+        })
 
         viewModel.allNotes.observe(this) { list ->
             list?.let {
@@ -133,7 +129,7 @@ class MainActivity : AppCompatActivity(), NotesAdapter.NotesItemClickedListener,
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
-        if(item?.itemId == R.id.delete_note){
+        if (item?.itemId == R.id.delete_note) {
             viewModel.deleteNote(selectedNote)
             return true
         }

@@ -46,6 +46,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:padding="10dp"
         android:inputType="textPersonName"
         android:hint="@string/title"
         android:textColor="@color/white"
