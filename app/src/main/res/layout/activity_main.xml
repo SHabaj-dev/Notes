@@ -20,15 +20,17 @@
         android:elevation="10dp"
         android:focusable="true" />
 
-    <SearchView
+    <AutoCompleteTextView
         android:id="@+id/sv_search_notes"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
         android:layout_margin="16dp"
         android:elevation="20dp"
+        android:hint="@string/search_notes"
+        android:padding="10dp"
         android:background="@drawable/backround_shape"
         android:iconifiedByDefault="false"
-        android:queryHint="@string/search_notes"
+        android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
